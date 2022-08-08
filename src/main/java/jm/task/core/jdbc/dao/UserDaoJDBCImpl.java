@@ -10,7 +10,6 @@ import java.util.List;
 public class UserDaoJDBCImpl implements UserDao {
 
     private int id = 0;
-    private Connection connection = Util.getConnection();
 
 //    Класс dao должен иметь конструктор пустой/по умолчанию
     public UserDaoJDBCImpl() {
@@ -19,7 +18,8 @@ public class UserDaoJDBCImpl implements UserDao {
 
 //    Создание таблицы для User(ов)
     public void createUsersTable() {
-        String sqlCommand = "CREATE TABLE IF NOT EXISTS user_test (id INT, firstname LONGTEXT, lastname VARCHAR(20), age INT)";
+        Connection connection = Util.getConnection();
+        String sqlCommand = "CREATE TABLE IF NOT EXISTS user_test (id INT, firstname VARCHAR(255), lastname VARCHAR(255), age INT)";
         try {
             Statement statement = connection.createStatement();
             statement.executeUpdate(sqlCommand);
@@ -31,6 +31,7 @@ public class UserDaoJDBCImpl implements UserDao {
 
 //    Удаление таблицы User(ов) – не должно приводить к исключению, если таблицы не существует
     public void dropUsersTable() {
+        Connection connection = Util.getConnection();
         String sqlCommand = "DROP TABLE IF EXISTS user_test";
         try {
             Statement statement = connection.createStatement();
@@ -43,6 +44,7 @@ public class UserDaoJDBCImpl implements UserDao {
 
 //    Добавление User в таблицу
     public void saveUser(String name, String lastName, byte age) {
+        Connection connection = Util.getConnection();
         String sqlCommand = "INSERT user_test (id, firstname, lastname, age) VALUES (?, ?, ?, ?)";
         try {
             PreparedStatement statement = connection.prepareStatement(sqlCommand);
@@ -59,6 +61,7 @@ public class UserDaoJDBCImpl implements UserDao {
 
 //    Удаление User из таблицы ( по id )
     public void removeUserById(long id) {
+        Connection connection = Util.getConnection();
         String sqlCommand = "DELETE FROM user_test WHERE id";
         try {
             Statement statement = connection.createStatement();
@@ -71,6 +74,7 @@ public class UserDaoJDBCImpl implements UserDao {
 
 //    Получение всех User(ов) из таблицы
     public List<User> getAllUsers() {
+        Connection connection = Util.getConnection();
         List<User> users = new ArrayList<>();
         try {
             Statement statement = connection.createStatement();
@@ -89,6 +93,7 @@ public class UserDaoJDBCImpl implements UserDao {
 
 //    Очистка содержания таблицы
     public void cleanUsersTable() {
+        Connection connection = Util.getConnection();
         String sqlCommand = "TRUNCATE user_test";
         try {
             Statement statement = connection.createStatement();
